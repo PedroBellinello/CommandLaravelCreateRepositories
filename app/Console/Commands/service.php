@@ -53,7 +53,7 @@ class service extends Command
 
     public function handle()
     {
-        dd($this->path);
+        
         $name = $this->argument("service");
         $mode = $this->option("mode");
         $contract = $this->option("contract");
