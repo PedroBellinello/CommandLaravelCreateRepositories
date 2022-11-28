@@ -41,18 +41,19 @@ class service extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->path['Configs'] = str_replace("app\Console\Commands", "config\\", __DIR__);
-        $this->path['Providers'] = str_replace("Console\Commands", "Providers\\", __DIR__);
-        $this->path['Contracts'] = str_replace("Console\Commands", "Contracts\\", __DIR__);
-        $this->path['Services'] = str_replace("Console\Commands", "Services\\", __DIR__);
-        $this->path['Repositories'] = str_replace("Console\Commands", "Repositories\\", __DIR__);
-        $this->path['Controllers'] = str_replace("Console\Commands", "Http\Controllers\\", __DIR__);
-        $this->path['Stubs'] = str_replace("Console\Commands", "Stubs\\", __DIR__);
+        $this->path['Configs'] = $this->path_app("config/");
+        $this->path['Providers'] = $this->path_app("Providers/");
+        $this->path['Contracts'] = $this->path_app("Contracts/");
+        $this->path['Services'] = $this->path_app("Services/");
+        $this->path['Repositories'] = $this->path_app("Repositories/");
+        $this->path['Controllers'] = $this->path_app("Http\Controllers/");
+        $this->path['Stubs'] = $this->path_app("Stubs/");
 
     }
 
     public function handle()
     {
+        dd($this->path);
         $name = $this->argument("service");
         $mode = $this->option("mode");
         $contract = $this->option("contract");
@@ -67,7 +68,7 @@ class service extends Command
 
         if(strtolower(trim($this->option("mode"))) === "api") {
             $this->set['Controllers']['stub'] = "ControllerApi";
-            $this->path['Controllers'] = str_replace("Console\Commands", "Http\Controllers\api\\", __DIR__);
+            $this->path['Controllers'] = $this->path_app("Http\Controllers\api/");
         }
         if(strtolower(trim($this->option("contract"))) === 'false') {
             $this->set['Repositories']['stub'] = "RepositoryNoContract";
@@ -231,6 +232,17 @@ class service extends Command
             }
         }
         if($show)$this->info("Finish!");
+    }
+
+    public function path_app($path)
+    {
+        $path = str_replace("/", "\\", $path);
+        return str_replace("Console\Commands", $path, __DIR__);
+    }
+    public function path_project($path)
+    {
+        $path = str_replace("/", "\\", $path);
+        return str_replace("app\Console\Commands", $path, __DIR__);
     }
 
 }
