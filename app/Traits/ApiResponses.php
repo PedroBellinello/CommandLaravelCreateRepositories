@@ -4,10 +4,10 @@ namespace App\Traits;
 
 trait ApiResponses
 {
-    private bool $viewResponse;
+    private bool $viewResponse = true;
     public function createResponse($message = null, $data = null, $errors = null, int $statusCode = null, $status = null, bool $breakCode = false)
     {
-        if($this->viewResponse){
+        if(!$this->viewResponse){
 
             if(!empty($data)) {
                 return $data;
@@ -59,7 +59,7 @@ trait ApiResponses
             $response[key($arg)] = $arg[key($arg)];
         }
 
-        if($this->viewResponse){
+        if(!$this->viewResponse){
 
             if(!empty($response)) {
                 return $response;
