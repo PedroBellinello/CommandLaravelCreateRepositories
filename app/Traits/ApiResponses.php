@@ -48,6 +48,7 @@ trait ApiResponses
     }
     public function createResponseCustom($message = null, int $statusCode = null, bool $breakCode = false, ...$args)
     {
+
         $response = [];
 
         if(!is_null($message))$response["message"] = $message;
@@ -56,6 +57,14 @@ trait ApiResponses
 
         foreach($args as $arg){
             $response[key($arg)] = $arg[key($arg)];
+        }
+
+        if($this->viewResponse){
+
+            if(!empty($response)) {
+                return $response;
+            }
+
         }
 
         if($breakCode){
