@@ -21,6 +21,7 @@ trait ApiResponses
                 return $message;
             }
 
+            return false;
         }
 
         $response = [];
@@ -65,6 +66,7 @@ trait ApiResponses
                 return $response;
             }
 
+            return false;
         }
 
         if($breakCode){
