@@ -111,7 +111,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t\$this->viewResponse = \$status;\n
 \t\treturn \$this;\n
 \t}\n
-\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function getAll()\n\t{
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
 \t\t\tif (\$all->count() > 0)\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$all, 200, false);\n
@@ -119,7 +119,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function find(\$id)\n\t{
 \t\ttry {\n
 \t\t\t\$ids = explode(\",\", \$id);\n
 \t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
@@ -128,7 +128,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function create(\$data): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function create(\$data)\n\t{
 \t\ttry {\n
 \t\t\t\$create = \$this->model->create(\$data);\n
 \t\t\tif (!\$create)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel criar o registro.\", [], false);\n
@@ -136,7 +136,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao criar o registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function update(\$data, \$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function update(\$data, \$id)\n\t{
 \t\ttry {\n
 \t\t\t\$update = \$this->model->where('id', \$id)->update(\$data);\n
 \t\t\tif (!\$update)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel salvar as alterações do registro.\", [], false);\n
@@ -144,7 +144,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao salvar as alterações do registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function destroy(\$id)\n\t{
 \t\ttry {\n
 \t\t\t\$destroy = \$this->model->destroy(\$id);\n
 \t\t\tif (!\$destroy)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel deletar o registro.\", [], false);\n
@@ -165,7 +165,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t\$this->viewResponse = \$status;\n
 \t\treturn \$this;\n
 \t}\n
-\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function getAll()\n\t{
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
 \t\t\tif (\$all->count() > 0)\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$all, 200, false);\n
@@ -173,7 +173,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function find(\$id)\n\t{
 \t\ttry {\n
 \t\t\t\$ids = explode(\",\", \$id);\n
 \t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
@@ -182,7 +182,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function create(\$data): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function create(\$data)\n\t{
 \t\ttry {\n
 \t\t\t\$create = \$this->model->create(\$data);\n
 \t\t\tif (!\$create)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel criar o registro.\", [], false);\n
@@ -190,7 +190,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao criar o registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function update(\$data, \$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function update(\$data, \$id)\n\t{
 \t\ttry {\n
 \t\t\t\$update = \$this->model->where('id', \$id)->update(\$data);\n
 \t\t\tif (!\$update)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel salvar as alterações do registro.\", [], false);\n
@@ -198,7 +198,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao salvar as alterações do registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{
+\tpublic function destroy(\$id)\n\t{
 \t\ttry {\n
 \t\t\t\$destroy = \$this->model->destroy(\$id);\n
 \t\t\tif (!\$destroy)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel deletar o registro.\", [], false);\n
@@ -213,12 +213,12 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
     {
         $content = "<?php\n\nnamespace App\Services;\n\n\nuse App\Repositories\{\$name}Repository;\n
 class {\$name}Service\n{\n\tprotected {\$name}Repository \$repos;\n\n
-\tpublic function __construct({\$name}Repository \$repos)\n\t{\n\t\t\$this->repos = \$repos;\n\t}\n
-\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->getAll();\n\t}\n
-\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->find(\$id);\n\t}\n
-\tpublic function create(\$data): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->create(\$data);\n\t}\n
-\tpublic function update(\$data, \$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->update(\$data, \$id);\n\t}\n
-\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->destroy(\$id);\n\t}\n}";
+\tpublic function __construct({\$name}Repository \$repos)\n\t{\n\t\t\$this->repos = \$repos;\n\t\t//\$this->repos->viewResponse(false); //For disable response json.\n\t}\n
+\tpublic function getAll()\n\t{\n\t\treturn \$this->repos->getAll();\n\t}\n
+\tpublic function find(\$id)\n\t{\n\t\treturn \$this->repos->find(\$id);\n\t}\n
+\tpublic function create(\$data)\n\t{\n\t\treturn \$this->repos->create(\$data);\n\t}\n
+\tpublic function update(\$data, \$id)\n\t{\n\t\treturn \$this->repos->update(\$data, \$id);\n\t}\n
+\tpublic function destroy(\$id)\n\t{\n\t\treturn \$this->repos->destroy(\$id);\n\t}\n}";
         return ["file"=>"Service", 'content'=>$content];
     }
 
@@ -226,11 +226,11 @@ class {\$name}Service\n{\n\tprotected {\$name}Repository \$repos;\n\n
     {
         $content = "<?php\n\nnamespace App\Http\Controllers;\n\nuse App\Services\{\$name}Service;\nuse Illuminate\Http\Request;\n
 class {\$name}Controller extends Controller\n{\n\tpublic {\$name}Service \$service;\n\n\tpublic function __construct({\$name}Service \$service)\n\t{\n\t\t\$this->service = \$service;\n\t}
-\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->getAll();\n\t}
-\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->find(\$id);\n\t}
-\tpublic function create(Request \$request): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->create(\$request->all());\n\t}
-\tpublic function update(Request \$request, \$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->update(\$request->all(), \$id);\n\t}
-\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->destroy(\$id);\n\t}\n}";
+\tpublic function getAll()\n\t{\n\t\treturn \$this->service->getAll();\n\t}
+\tpublic function find(\$id)\n\t{\n\t\treturn \$this->service->find(\$id);\n\t}
+\tpublic function create(Request \$request)\n\t{\n\t\treturn \$this->service->create(\$request->all());\n\t}
+\tpublic function update(Request \$request, \$id)\n\t{\n\t\treturn \$this->service->update(\$request->all(), \$id);\n\t}
+\tpublic function destroy(\$id)\n\t{\n\t\treturn \$this->service->destroy(\$id);\n\t}\n}";
         return ["file"=>"Controller", 'content'=>$content];
     }
 
@@ -238,11 +238,11 @@ class {\$name}Controller extends Controller\n{\n\tpublic {\$name}Service \$servi
     {
         $content = "<?php\n\nnamespace App\Http\Controllers\api;\n\nuse App\Http\Controllers\Controller;\nuse App\Services\{\$name}Service;\nuse Illuminate\Http\Request;\n
 class {\$name}Controller extends Controller\n{\n\tpublic {\$name}Service \$service;\n\n\tpublic function __construct({\$name}Service \$service)\n\t{\n\t\t\$this->service = \$service;\n\t}
-\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->getAll();\n\t}
-\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->find(\$id);\n\t}
-\tpublic function create(Request \$request): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->create(\$request->all());\n\t}
-\tpublic function update(Request \$request, \$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->update(\$request->all(), \$id);\n\t}
-\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->service->destroy(\$id);\n\t}\n}";
+\tpublic function getAll()\n\t{\n\t\treturn \$this->service->getAll();\n\t}
+\tpublic function find(\$id)\n\t{\n\t\treturn \$this->service->find(\$id);\n\t}
+\tpublic function create(Request \$request)\n\t{\n\t\treturn \$this->service->create(\$request->all());\n\t}
+\tpublic function update(Request \$request, \$id)\n\t{\n\t\treturn \$this->service->update(\$request->all(), \$id);\n\t}
+\tpublic function destroy(\$id)\n\t{\n\t\treturn \$this->service->destroy(\$id);\n\t}\n}";
         return ["file"=>"ControllerApi", 'content'=>$content];
     }
 
