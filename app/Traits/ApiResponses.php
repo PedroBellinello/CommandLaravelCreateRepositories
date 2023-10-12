@@ -4,8 +4,25 @@ namespace App\Traits;
 
 trait ApiResponses
 {
+    private bool $viewResponse;
     public function createResponse($message = null, $data = null, $errors = null, int $statusCode = null, $status = null, bool $breakCode = false)
     {
+        if($this->viewResponse){
+
+            if(!empty($data)) {
+                return $data;
+            }
+
+            if(!empty($errors)) {
+                return $errors;
+            }
+
+            if(!empty($message)) {
+                return $message;
+            }
+
+        }
+
         $response = [];
 
         $response["message"] = $message;
