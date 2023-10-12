@@ -19,18 +19,18 @@ class service extends Command
      */
     protected $description = 'Command description';
 
-    protected $register = "public function register(){";
+    protected string $register = "public function register(){";
 
-    protected $path = [];
+    protected array $path = [];
 
-    protected $set = [
-      "Repositories" => ["prefix"=>"Repository", "stub"=>"Repository"],
-      "Services" => ["prefix"=>"Service", "stub"=>"Service"],
-      "Contracts" => ["prefix"=>"RepositoryInterface", "stub"=>"Contract"],
-      "Controllers" => ["prefix"=>"Controller", "stub"=>"Controller"]
+    protected array $set = [
+        "Repositories" => ["prefix"=>"Repository", "stub"=>"Repository"],
+        "Services" => ["prefix"=>"Service", "stub"=>"Service"],
+        "Contracts" => ["prefix"=>"RepositoryInterface", "stub"=>"Contract"],
+        "Controllers" => ["prefix"=>"Controller", "stub"=>"Controller"]
     ];
 
-    protected $typeMakeProvider = "stub"; // stub or shell;
+    protected string $typeMakeProvider = "stub"; // stub or shell;
 
     /**
      * Execute the console command.
@@ -41,19 +41,19 @@ class service extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->path['Configs'] = $this->path_app("config/");
-        $this->path['Providers'] = $this->path_app("Providers/");
-        $this->path['Contracts'] = $this->path_app("Contracts/");
-        $this->path['Services'] = $this->path_app("Services/");
-        $this->path['Repositories'] = $this->path_app("Repositories/");
-        $this->path['Controllers'] = $this->path_app("Http\Controllers/");
-        $this->path['Stubs'] = $this->path_app("Stubs/");
+        $this->path['Configs'] = config_path('/');
+        $this->path['Providers'] = app_path("Providers/");
+        $this->path['Contracts'] = app_path("Contracts/");
+        $this->path['Services'] = app_path("Services/");
+        $this->path['Repositories'] = app_path("Repositories/");
+        $this->path['Controllers'] = app_path("Http/Controllers/");
+        $this->path['Stubs'] = app_path("Stubs/");
 
     }
 
     public function handle()
     {
-        
+
         $name = $this->argument("service");
         $mode = $this->option("mode");
         $contract = $this->option("contract");
@@ -68,7 +68,7 @@ class service extends Command
 
         if(strtolower(trim($this->option("mode"))) === "api") {
             $this->set['Controllers']['stub'] = "ControllerApi";
-            $this->path['Controllers'] = $this->path_app("Http\Controllers\api/");
+            $this->path['Controllers'] = app_path("Http\Controllers\api/");
         }
         if(strtolower(trim($this->option("contract"))) === 'false') {
             $this->set['Repositories']['stub'] = "RepositoryNoContract";
@@ -121,7 +121,7 @@ class service extends Command
                 $fileConfigApp = $this->path['Configs']."app.php";
                 $ConfigRead = file_get_contents($fileConfigApp);
 
-                $openFile = fopen($fileConfigApp, "w+");
+                $openFile = fopen($fileConfigApp, 'wb+');
                 $publishAfter = "App\Providers\RouteServiceProvider::class,";
                 $publishBefore = "App\Providers\BindServiceProvider::class,";
 
@@ -152,7 +152,7 @@ class service extends Command
 
         if(file_exists($provider) && !str_contains($providerRead, $bind)){
             $this->comment("Publishing bind interface: {$interface}");
-            $openFile = fopen($provider, "w+");
+            $openFile = fopen($provider, 'wb+');
             if(fwrite($openFile, $bindPublished)) {
                 $this->info("Bind published in: {$provider}");
                 fclose($openFile);
@@ -164,13 +164,13 @@ class service extends Command
         }
     }
 
-    public function createDefault($path, $name, $title, $stub)
+    public function createDefault($path, $name, $title, $stub): bool
     {
         $fileDefault = $path."{$name}.php";
         if(!file_exists($fileDefault)){
 
             $this->comment("Creating {$title}: {$name}");
-            $openFile = fopen($fileDefault, "w+");
+            $openFile = fopen($fileDefault, 'wb+');
             $readStubsInterface = file_get_contents($this->path['Stubs']."{$stub}.stub");
             if(fwrite($openFile, $readStubsInterface)) {
                 $this->info("{$title} created in: {$fileDefault}");
@@ -180,7 +180,7 @@ class service extends Command
         return file_exists($fileDefault);
     }
 
-    public function create($name)
+    public function create($name): bool
     {
         foreach ($this->set as $key => $parameters) {
             $prefix = ($parameters['prefix'] ?? $key);
@@ -195,7 +195,7 @@ class service extends Command
                 $readStubs = file_get_contents($this->path['Stubs'] . ($parameters['stub'] ?? $key).".stub");
                 $replacesVariableInStubs = str_replace('{$name}', $name, $readStubs);
 
-                $openFile = fopen($fileCreatePath, "w+");
+                $openFile = fopen($fileCreatePath, 'wb+');
                 if (fwrite($openFile, $replacesVariableInStubs)) {
                     $this->info("{$key} created in: {$fileCreatePath}");
                     fclose($openFile);
@@ -213,13 +213,11 @@ class service extends Command
 
     public function concat($strPrimary, $strSecond, $string)
     {
-        $concat = str_replace($strPrimary, $strPrimary."\n\t\t".$strSecond, $string);
-
-        return $concat;
+        return str_replace($strPrimary, $strPrimary."\n\t\t".$strSecond, $string);
 
     }
 
-    public function makeDirIfNotExists()
+    public function makeDirIfNotExists(): void
     {
         $show = false;
         foreach ($this->path as $path) {
@@ -231,18 +229,9 @@ class service extends Command
                 mkdir($path);
             }
         }
-        if($show)$this->info("Finish!");
-    }
-
-    public function path_app($path)
-    {
-        $path = str_replace("/", "\\", $path);
-        return str_replace("Console\Commands", $path, __DIR__);
-    }
-    public function path_project($path)
-    {
-        $path = str_replace("/", "\\", $path);
-        return str_replace("app\Console\Commands", $path, __DIR__);
+        if($show) {
+            $this->info("Finish!");
+        }
     }
 
 }
