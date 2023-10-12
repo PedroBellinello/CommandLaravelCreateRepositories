@@ -33,18 +33,18 @@ class stubs extends Command implements Isolatable
     public function __construct()
     {
         parent::__construct();
-        $this->path['Stubs'] = str_replace("Console\Commands", "Stubs\\", __DIR__);
+        $this->path['Stubs'] = app_path("Stubs/");
 
         $this->runStubs = [
-          "Provide"=>$this->BindServiceProvider(),
-          "Contract"=>$this->Contract(),
-          "DefaultRepository"=>$this->DefaultRepository(),
-          "DefaultRepositoryInterface"=>$this->DefaultRepositoryInterface(),
-          "Repository"=>$this->Repository(),
-          "RepositoryNoContract"=>$this->RepositoryNoContract(),
-          "Service"=>$this->Service(),
-          "Controller"=>$this->Controller(),
-          "ControllerApi"=>$this->ControllerApi(),
+            "Provide"=>$this->BindServiceProvider(),
+            "Contract"=>$this->Contract(),
+            "DefaultRepository"=>$this->DefaultRepository(),
+            "DefaultRepositoryInterface"=>$this->DefaultRepositoryInterface(),
+            "Repository"=>$this->Repository(),
+            "RepositoryNoContract"=>$this->RepositoryNoContract(),
+            "Service"=>$this->Service(),
+            "Controller"=>$this->Controller(),
+            "ControllerApi"=>$this->ControllerApi(),
         ];
 
     }
@@ -147,12 +147,12 @@ class {\$name}Repository\n{\n\tprotected {\$name} \$model;\n
     {
         $content = "<?php\n\nnamespace App\Services;\n\n\nuse App\Repositories\{\$name}Repository;\n
 class {\$name}Service\n{\n\tprotected {\$name}Repository \$repos;\n\n
-\n\tpublic function __construct({\$name}Repository \$repos)\n\t{\n\t\t\$this->repos = \$repos;\n\t}\n\n
-\n\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->getAll();\n\t}\n\n
-\n\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->find(\$id);\n\t}\n\n
-\n\tpublic function create(\$data): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->create(\$data);\n\t}\n\n
-\n\tpublic function update(\$data, \$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->update(\$data, \$id);\n\t}\n\n
-\n\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->destroy(\$id);\n\t}\n}";
+\tpublic function __construct({\$name}Repository \$repos)\n\t{\n\t\t\$this->repos = \$repos;\n\t}\n
+\tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->getAll();\n\t}\n
+\tpublic function find(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->find(\$id);\n\t}\n
+\tpublic function create(\$data): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->create(\$data);\n\t}\n
+\tpublic function update(\$data, \$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->update(\$data, \$id);\n\t}\n
+\tpublic function destroy(\$id): \Illuminate\Http\JsonResponse\n\t{\n\t\treturn \$this->repos->destroy(\$id);\n\t}\n}";
         return ["file"=>"Service", 'content'=>$content];
     }
 
@@ -184,14 +184,12 @@ class {\$name}Controller extends Controller\n{\n\tpublic {\$name}Service \$servi
     {
         $fileStub = $this->path['Stubs'].$stub['file'].".stub";
         if(!file_exists($fileStub)) {
-            $fileCreate = fopen($fileStub, "w+");
+            $fileCreate = fopen($fileStub, 'wb+');
             $this->comment("Creating stub: " . $stub['file']);
             if (fwrite($fileCreate, $stub['content'])) {
                 $this->info("Stub " . $stub['file'] . " created in: " . $fileStub);
                 fclose($fileCreate);
             }
-        }else{
-            //$this->comment($stub['file']." is already created.");
         }
     }
 
