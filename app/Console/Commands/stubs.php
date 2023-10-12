@@ -107,6 +107,10 @@ class stubs extends Command implements Isolatable
 namespace App\Repositories;\n\nuse App\Contracts\{\$name}RepositoryInterface;\nuse App\Models\{\$name};\nuse App\Traits\ApiResponses;\n
 class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model;\n
 \tpublic function __construct({\$name} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
+\tpublic function viewResponse(bool \$status)\n\t{
+\t\t\$this->viewResponse = \$status;\n
+\t\treturn \$this;\n
+\t}\n
 \tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
@@ -157,6 +161,10 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 namespace App\Repositories;\n\nuse App\Models\{\$name};\nuse App\Traits\ApiResponses;\n
 class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model;\n
 \tpublic function __construct({\$name} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
+\tpublic function viewResponse(bool \$status)\n\t{
+\t\t\$this->viewResponse = \$status;\n
+\t\treturn \$this;\n
+\t}\n
 \tpublic function getAll(): \Illuminate\Http\JsonResponse\n\t{
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
