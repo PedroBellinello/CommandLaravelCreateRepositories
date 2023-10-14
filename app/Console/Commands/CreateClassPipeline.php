@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
-class CreateClassPipelineCommand extends Command
+class CreateClassPipeline extends Command
 {
     protected $signature = 'make:pipeline {pipe?} {--model=}';
 
@@ -111,8 +111,8 @@ class CreateClassPipelineCommand extends Command
 
         return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace}\n
 class {$pipeName}Pipeline {\n
-\tpublic function __construct( protected Request \$request )\n\t{\n\n\t}\n
-\tpublic function handle({$modelName} \$content, Closure \$next )\n\t{\n
+\tpublic function __construct(protected Request \$request)\n\t{\n\n\t}\n
+\tpublic function handle({$modelName} \$content, Closure \$next)\n\t{\n
 \t\treturn \$next(\$content);\n
 \t}\n
 }";
