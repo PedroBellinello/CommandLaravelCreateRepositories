@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class stubs extends Command implements Isolatable
+class Stubs extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.
