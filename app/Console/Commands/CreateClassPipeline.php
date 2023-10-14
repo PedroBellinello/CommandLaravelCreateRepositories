@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
-class CreateClassPipeline extends Command
+class CreateClassPipelineCommand extends Command
 {
     protected $signature = 'make:pipeline {pipe?} {--model=}';
 
@@ -28,10 +28,12 @@ class CreateClassPipeline extends Command
 
             if(count($pipes) > 2) {
 
-                foreach ($pipes as $key => $value) {
+                foreach ($pipes as $value) {
 
-                    if($key !== $pipes[array_key_first($pipes)])
-                        $namespace .= sprintf("%s%s%s", $namespace , "\\", $value);
+                    $this->comment("{$value} === ".$pipes[array_key_last($pipes)]);
+
+                    if($value !== $pipes[array_key_last($pipes)])
+                        $namespace = sprintf("%s%s%s", $namespace , "\\", $value);
 
                 }
 
