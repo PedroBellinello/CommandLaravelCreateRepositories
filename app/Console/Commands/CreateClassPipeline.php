@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Storage;
 
@@ -109,9 +110,14 @@ class CreateClassPipeline extends Command
         $pipeName = $pipe['class'];
         $namespace = $pipe['namespace'];
 
-        return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace}\n
-class {$pipeName}Pipeline {\n
-\tpublic function __construct( protected Request \$request )\n\t{\n\n\t}\n
+        return "<?php\n\nnamespace {$namespace};\n
+use Closure;
+use Illuminate\Http\Request;
+use App\Traits\ApiResponses;
+{$modelNamespace}\n
+class {$pipeName}Pipeline\n{\n
+\tuse ApiResponses;\n\n\tprivate object \$request;
+\tpublic function __construct( Request \$request )\n\t{\n\t\t\$this->request = (object) \$request->all();\n\t}\n
 \tpublic function handle({$modelName} \$content, Closure \$next )\n\t{\n
 \t\treturn \$next(\$content);\n
 \t}\n
