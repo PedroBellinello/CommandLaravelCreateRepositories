@@ -96,7 +96,7 @@ class CreateClassPipeline extends Command
         }
 
         return [
-          'class' => $classModel,
+          'class' => " ".$classModel,
           'namespace' => "use $namespace;"
         ];
     }
@@ -111,8 +111,8 @@ class CreateClassPipeline extends Command
 
         return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace}\n
 class {$pipeName}Pipeline {\n
-\tpublic function __construct(protected Request \$request)\n\t{\n\n\t}\n
-\tpublic function handle({$modelName} \$content, Closure \$next)\n\t{\n
+\tpublic function __construct( protected Request \$request )\n\t{\n\n\t}\n
+\tpublic function handle({$modelName} \$content, Closure \$next )\n\t{\n
 \t\treturn \$next(\$content);\n
 \t}\n
 }";
