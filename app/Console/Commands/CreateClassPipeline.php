@@ -20,32 +20,15 @@ class CreateClassPipelineCommand extends Command
 
         $pipe = $this->argument("pipe");
         $model = $this->option("model");
-        $namespace = 'App\Pipelines';
 
-        if(str_contains($pipe, "/")){
 
-            $pipes = explode("/", $pipe);
-
-            if(count($pipes) > 2) {
-
-                foreach ($pipes as $value) {
-
-                    if($value !== $pipes[array_key_last($pipes)])
-                        $namespace = sprintf("%s%s%s", $namespace , "\\", $value);
-
-                }
-
-            }else {
-
-                $namespace .= sprintf("%s%s", "\\", $pipes[array_key_first($pipes)]);
-
-            }
-
-            $classPipe = $pipes[array_key_last($pipes)];
-
-        }
-
-        $createFile = self::storage()->put( sprintf("%sPipeline.php",$pipe), $this->stub($classPipe, $namespace, $model));
+        $createFile = self::storage()->put(
+            sprintf("%sPipeline.php",$pipe),
+            $this->stub(
+                $this->getPipeNamespace($pipe),
+                $this->getModelNamespace($model)
+            )
+        );
 
         if($createFile) {
 
@@ -56,15 +39,80 @@ class CreateClassPipelineCommand extends Command
 
         $this->error("Failed to create pipeline.");
     }
-
-    public function stub($pipe, $namespace = null, $model = null)
+    public function getPipeNamespace($pipe)
     {
-        $model = !empty($model) ? $model : '';
-        $modelNamespace = !empty($model) ? "use App\Models\\$model;" : '';
+        $namespace = 'App\Pipelines';
 
-        return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace} \n\nclass {$pipe}Pipeline {\n
+        if(str_contains($pipe, "/")){
+
+            $pipes = explode("/", $pipe);
+
+            foreach ($pipes as $value) {
+
+                if($value !== $pipes[array_key_last($pipes)])
+                    $namespace = sprintf("%s%s%s", $namespace , "\\", $value);
+
+            }
+
+            $classPipe = $pipes[array_key_last($pipes)];
+
+        }else{
+            $classPipe = $pipe;
+        }
+
+        return [
+            'class' => $classPipe,
+            'namespace' => $namespace
+        ];
+    }
+
+
+    public function getModelNamespace($model = null)
+    {
+        if(empty($model)) {
+            return [
+                'class' => '',
+                'namespace' => ''
+            ];
+        }
+
+        $namespace = 'App\Models';
+
+        if(str_contains($model, "/")){
+
+            $pathModel = explode("/", $model);
+
+            foreach ($pathModel as $value) {
+
+                $namespace = sprintf("%s%s%s", $namespace, "\\", $value);
+
+            }
+
+            $classModel = $pathModel[array_key_last($pathModel)];
+
+        }else{
+            $classModel = $model;
+            $namespace =  sprintf("%s%s%s", $namespace, "\\", $model);
+        }
+
+        return [
+          'class' => $classModel,
+          'namespace' => "use $namespace;"
+        ];
+    }
+
+    public function stub($pipe, array $model)
+    {
+        $modelName = $model['class'];
+        $modelNamespace = $model["namespace"];
+
+        $pipeName = $pipe['class'];
+        $namespace = $pipe['namespace'];
+
+        return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace}\n
+class {$pipeName}Pipeline {\n
 \tpublic function __construct( protected Request \$request )\n\t{\n\n\t}\n
-\tpublic function handle({$model} \$content, Closure \$next )\n\t{\n
+\tpublic function handle({$modelName} \$content, Closure \$next )\n\t{\n
 \t\treturn \$next(\$content);\n
 \t}\n
 }";
