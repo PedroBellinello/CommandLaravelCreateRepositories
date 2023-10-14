@@ -30,8 +30,6 @@ class CreateClassPipelineCommand extends Command
 
                 foreach ($pipes as $value) {
 
-                    $this->comment("{$value} === ".$pipes[array_key_last($pipes)]);
-
                     if($value !== $pipes[array_key_last($pipes)])
                         $namespace = sprintf("%s%s%s", $namespace , "\\", $value);
 
