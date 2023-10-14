@@ -60,8 +60,9 @@ class CreateClassPipelineCommand extends Command
     public function stub($pipe, $namespace = null, $model = null)
     {
         $model = !empty($model) ? $model : '';
+        $modelNamespace = !empty($model) ? "use App\Models\\$model;" : '';
 
-        return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n\nclass {$pipe}Pipeline {\n
+        return "<?php\n\nnamespace {$namespace};\n\nuse Closure;\nuse Illuminate\Http\Request;\n{$modelNamespace} \n\nclass {$pipe}Pipeline {\n
 \tpublic function __construct( protected Request \$request )\n\t{\n\n\t}\n
 \tpublic function handle({$model} \$content, Closure \$next )\n\t{\n
 \t\treturn \$next(\$content);\n
