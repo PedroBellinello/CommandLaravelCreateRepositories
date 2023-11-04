@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 
-class Stubs extends Command implements Isolatable
+class stubs extends Command implements Isolatable
 {
     /**
      * The name and signature of the console command.
@@ -104,14 +104,15 @@ class Stubs extends Command implements Isolatable
     private function Repository(): array
     {
         $content = "<?php\n
-namespace App\Repositories;\n\nuse App\Contracts\{\$name}RepositoryInterface;\nuse App\Models\{\$name};\nuse App\Traits\ApiResponses;\n
-class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model;\n
-\tpublic function __construct({\$name} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
-\tpublic function viewResponse(bool \$status)\n\t{
-\t\t\$this->viewResponse = \$status;\n
+namespace App\Repositories;\n\nuse App\Contracts\{\$name}RepositoryInterface;\nuse App\Models\{\$nameModel};\nuse App\Traits\ApiResponses;\n
+class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiResponses;\n\n\tprotected {\$nameModel} \$model;\n
+\tpublic function __construct({\$nameModel} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
+\tpublic function viewResponse(bool \$status = null)\n\t{
+\t\t\$this->viewResponse = ( \$status ?? ( \$this->viewResponse ?? true ));\n
 \t\treturn \$this;\n
 \t}\n
-\tpublic function getAll()\n\t{
+\tpublic function getAll(\$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
 \t\t\tif (\$all->count() > 0)\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$all, 200, false);\n
@@ -119,7 +120,8 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function find(\$id)\n\t{
+\tpublic function find(\$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$ids = explode(\",\", \$id);\n
 \t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
@@ -128,7 +130,8 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function create(\$data)\n\t{
+\tpublic function create(\$data, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$create = \$this->model->create(\$data);\n
 \t\t\tif (!\$create)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel criar o registro.\", [], false);\n
@@ -136,7 +139,8 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao criar o registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function update(\$data, \$id)\n\t{
+\tpublic function update(\$data, \$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$update = \$this->model->where('id', \$id)->update(\$data);\n
 \t\t\tif (!\$update)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel salvar as alterações do registro.\", [], false);\n
@@ -144,7 +148,8 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao salvar as alterações do registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function destroy(\$id)\n\t{
+\tpublic function destroy(\$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$destroy = \$this->model->destroy(\$id);\n
 \t\t\tif (!\$destroy)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel deletar o registro.\", [], false);\n
@@ -158,14 +163,15 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
     private function RepositoryNoContract(): array
     {
         $content = "<?php\n
-namespace App\Repositories;\n\nuse App\Models\{\$name};\nuse App\Traits\ApiResponses;\n
-class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model;\n
-\tpublic function __construct({\$name} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
-\tpublic function viewResponse(bool \$status)\n\t{
-\t\t\$this->viewResponse = \$status;\n
+namespace App\Repositories;\n\nuse App\Models\{\$nameModel};\nuse App\Traits\ApiResponses;\n
+class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$nameModel} \$model;\n
+\tpublic function __construct({\$nameModel} \$model)\n\t{\n\t\t\$this->model = \$model;\n\t}\n
+\tpublic function viewResponse(bool \$status = null)\n\t{
+\t\t\$this->viewResponse = ( \$status ?? ( \$this->viewResponse ?? true ));\n
 \t\treturn \$this;\n
 \t}\n
-\tpublic function getAll()\n\t{
+\tpublic function getAll(\$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$all = \$this->model->all();\n
 \t\t\tif (\$all->count() > 0)\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$all, 200, false);\n
@@ -173,7 +179,8 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function find(\$id)\n\t{
+\tpublic function find(\$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$ids = explode(\",\", \$id);\n
 \t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
@@ -182,7 +189,8 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao retornar os registros\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function create(\$data)\n\t{
+\tpublic function create(\$data, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$create = \$this->model->create(\$data);\n
 \t\t\tif (!\$create)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel criar o registro.\", [], false);\n
@@ -190,7 +198,8 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao criar o registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function update(\$data, \$id)\n\t{
+\tpublic function update(\$data, \$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$update = \$this->model->where('id', \$id)->update(\$data);\n
 \t\t\tif (!\$update)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel salvar as alterações do registro.\", [], false);\n
@@ -198,7 +207,8 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$name} \$model
 \t\t}catch (\Exception \$e) {\n
 \t\t\treturn \$this->fail(\"Houve uma falha ao salvar as alterações do registro\", \$e);\n
 \t\t}\n\t}\n
-\tpublic function destroy(\$id)\n\t{
+\tpublic function destroy(\$id, \$viewResponse = null)\n\t{
+\t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
 \t\t\t\$destroy = \$this->model->destroy(\$id);\n
 \t\t\tif (!\$destroy)\n\t\t\t\treturn \$this->notFound(\"Não foi possivel deletar o registro.\", [], false);\n
