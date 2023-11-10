@@ -106,6 +106,10 @@ trait ApiResponses
     {
         return $this->createResponse($messageError, $data, $messageError, $statusCode, false, $breakCode);
     }
+    public function unprocessableContent($messageError, $data = [], $statusCode = 422, $breakCode = true)
+    {
+        return $this->createResponse($messageError, $data, $messageError, $statusCode, false, $breakCode);
+    }
     public function incomplete($messageError, $data = [], $statusCode = 400, $breakCode = true)
     {
         return $this->createResponse($messageError, $data, $messageError, $statusCode, false, $breakCode);
@@ -125,6 +129,13 @@ trait ApiResponses
     public function internalError($messageError, $data = [], int $statusCode = 500)
     {
         return $this->createResponse($messageError, $data, $messageError, $statusCode, false, true);
+    }
+    public function dump(mixed $data, int $statusCode = 500): void
+    {
+        header("Content-Type: application/json");
+        http_response_code($statusCode);
+        echo json_encode($data, JSON_THROW_ON_ERROR);
+        exit;
     }
 
 }
