@@ -12,7 +12,7 @@ trait HttpRequest
     private array $headers = [];
     private array $options = [];
     private mixed $payload = [];
-    private mixed $baseUrl, $endPoint, $response, $httpResponse, $httpMethod, $token, $username, $password;
+    private mixed $baseUrl, $endPoint, $response, $httpResponse, $httpMethod, $token, $username, $password, $attachments;
     private $params = null;
     private bool $showResponse = true;
     private array $config = [
@@ -124,6 +124,16 @@ trait HttpRequest
         return Http::withHeaders($headers)->withOptions($options)->timeout($timeout);
     }
 
+    public function attach($name, $contents = '', $filename = null, $headers = []){
+
+        $this->attachments = Http::attach($name, $contents, $filename, $headers);
+
+        $this->attachments->withHeaders($this->headers);
+
+        return $this;
+
+    }
+
     public function http($method = 'post', $timeout = 30): static
     {
         $method = ($this->httpMethod ?? $method);
@@ -164,8 +174,17 @@ trait HttpRequest
 
         return $this->response->successful();
     }
-    public function send($timeout = 30): \Illuminate\Http\JsonResponse|bool|null
+    
+    public function send($timeout = 30)
     {
+        if(!empty($this->attachments)){
+
+            $this->response = $this->attachments->timeout($timeout)->post($this->endPoint, $this->payload);
+
+            return $this->httpResponse();
+
+        }
+
         return $this->http("POST", $timeout)->httpResponse();
     }
 
