@@ -135,7 +135,7 @@ class {\$name}Repository implements {\$name}RepositoryInterface\n{\n\tuse ApiRes
 \tpublic function findMany(array \$ids, \$viewResponse = null)\n\t{
 \t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
-\t\t\t\$find = \$this->model->whereIn('id', \$getIds);\n
+\t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
 \t\t\tif (\$find->exists())\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$find->get(), 200, false);\n
 \t\t\treturn \$this->notFound(\"Nenhum registro retornado.\", [], false);\n
 \t\t}catch (\Exception \$e) {\n
@@ -214,7 +214,7 @@ class {\$name}Repository\n{\n\tuse ApiResponses;\n\n\tprotected {\$nameModel} \$
 \tpublic function findMany(array \$ids, \$viewResponse = null)\n\t{
 \t\t\$this->viewResponse(\$viewResponse);\n
 \t\ttry {\n
-\t\t\t\$find = \$this->model->whereIn('id', \$getIds);\n
+\t\t\t\$find = \$this->model->whereIn('id', \$ids);\n
 \t\t\tif (\$find->exists())\n\t\t\t\treturn \$this->success(\"Registros retornados.\", \$find->get(), 200, false);\n
 \t\t\treturn \$this->notFound(\"Nenhum registro retornado.\", [], false);\n
 \t\t}catch (\Exception \$e) {\n
