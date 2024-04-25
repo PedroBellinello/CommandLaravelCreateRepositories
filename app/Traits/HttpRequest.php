@@ -297,4 +297,17 @@ trait HttpRequest
     {
         return collect($this->response->json());
     }
+    
+    public function patch($timeout = 30)
+    {
+        $response = $this->request('patch', $timeout);
+    
+        $this->endPoint = $this->endPoint.$this->params;
+    
+        $this->response = call_user_func(array($response, 'patch'), $this->endPoint, $this->payload);
+    
+        return $this;
+    }
+   
+
 }
